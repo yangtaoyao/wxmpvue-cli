@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/me/main",
+    "pages/task/main"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "猿计划",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "backgroundColor":"#ffffff",
+    "selectedColor":"#333333",
+    "color":"#999999",
+    "list": [{
+      "iconPath":"/static/icon/shouye1.png",
+      "selectedIconPath":"/static/icon/shouye2.png",
+      "pagePath": "pages/index/main",
+      "text": "首页"
+    }, {
+      "iconPath":"/static/icon/daka1.png",
+      "selectedIconPath":"/static/icon/daka2.png",
+      "pagePath": "pages/task/main",
+      "text": "打卡"
+    },
+    {
+      "iconPath":"/static/icon/wode1.png",
+      "selectedIconPath":"/static/icon/wode2.png",
+      "pagePath": "pages/me/main",
+      "text": "我的"
+    }]
+  }
+}
