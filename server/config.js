@@ -3,7 +3,8 @@ const CONF = {
     rootPathname: '',
 
   // 微信小程序 App ID
-    appId: 'wx85c4762ff4f73361',
+    // appId: '',
+    appId: 'wx85c4762ff4f73361', // #gitignore
 
   // 微信小程序 App Secret
     appSecret: '',
@@ -21,7 +22,8 @@ const CONF = {
         port: 3306,
         user: 'root',
         db: 'cAuth',
-        pass: 'wx85c4762ff4f73361',
+        pass: 'wx85c4762ff4f73361', // #gitignore
+        // pass: '',
         // 表情格式
         char: 'utf8mb4'
     },
@@ -59,10 +61,14 @@ const CONF = {
     serverHost: 'localhost',
     tunnelServerUrl: '',
     tunnelSignatureKey: '',
+
   // 腾讯云相关配置可以查看云 API 秘钥控制台：https://console.cloud.tencent.com/capi
-    qcloudAppId: '1257821301', // 您的腾讯云 AppID
-    qcloudSecretId: 'AKIDIRLacQCHSeeR2RwiZFiz2sWxCF8otXaR', // '您的腾讯云 SecretId',
-    qcloudSecretKey: 'nNkvugEbmkTyEEzXquiHjxvd7LQIzSko', // '您的腾讯云 SecretKey',
+    // qcloudAppId: '',// 您的腾讯云 AppID
+    qcloudAppId: '1257821301', // #gitignore
+    //  qcloudSecretId: '',// '您的腾讯云 SecretId',
+    qcloudSecretId: 'AKIDIRLacQCHSeeR2RwiZFiz2sWxCF8otXaR', // #gitignore
+     // qcloudSecretKey: '',//'您的腾讯云 SecretKey',
+    qcloudSecretKey: 'nNkvugEbmkTyEEzXquiHjxvd7LQIzSko', // #gitignore
     networkTimeout: 30000
 }
 
