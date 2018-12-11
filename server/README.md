@@ -20,7 +20,7 @@ npm i pm2 nodemon -g
 npm i
 ```
 
-#### 启动项目
+#### 启动项目后台server
 
 ```bash
 # 开发环境，监听文件变化自动重启，并会输出 debug 信息

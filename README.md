@@ -3,6 +3,16 @@
 本仓库前台使用mpvue框架，可用vue开发小程序
 后台使用nodejs--koa2开发
 
+#### 开发环境启动项目前台
+
+```bash
+
+# 开发环境，监听文件变化自动重启，并会输出 debug 信息
+npm run dev
+
+# 打包
+npm run build
+```
 ## mpvue[文档](https://github.com/Meituan-Dianping/mpvue)
 
 ## 小程序文档
