@@ -15,7 +15,10 @@ var config = {
         tunnelUrl: `${baseUrl}/tunnel`,
 
         // 上传图片接口
-        uploadUrl: `${baseUrl}/upload`
+        uploadUrl: `${baseUrl}/upload`,
+
+
+        QQMapWXKey:'QXYBZ-JB3H6-LM4SH-EUC6L-4N3WZ-Q3BCQ'
 };
 
 export default  config;

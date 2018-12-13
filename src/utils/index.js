@@ -42,10 +42,20 @@ var showModel = (title, content) => {
   })
 }
 
+
+import QQMapWX from '../../static/qqmap-wx-jssdk.min'
+import config from '@/config'
+
+const QQMap=new QQMapWX({
+  key: config.QQMapWXKey // 必填
+})
+
 export default {
   formatNumber,
   formatTime,
   showBusy,
   showSuccess,
   showModel,
+
+  QQMap
 }
