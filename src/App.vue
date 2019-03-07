@@ -16,9 +16,9 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-between;
-  padding: 200rpx 0;
+  padding: 0;
   box-sizing: border-box;
 }
 /* this rule will be remove */
@@ -27,6 +27,10 @@ export default {
   -moz-transition: width 2s;
   -webkit-transition: width 2s;
   -o-transition: width 2s;
+}
+/* 页面背景颜色 */
+page{
+  background-color:#f8f8f8;
 }
 /*rpx*/
 </style>

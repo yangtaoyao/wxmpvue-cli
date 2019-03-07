@@ -5,7 +5,7 @@ module.exports = async (ctx, next) => {
     // 具体查看：
 
     console.log('api---login')
-    console.log(ctx.state.$wxInfo)
+    // console.log(ctx.state.$wxInfo)
     if (ctx.state.$wxInfo.loginState) {
         ctx.state.data = ctx.state.$wxInfo.userinfo
         ctx.state.data['time'] = Math.floor(Date.now() / 1000)

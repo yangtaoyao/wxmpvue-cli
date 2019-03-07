@@ -34,4 +34,6 @@ router.get('/user', validationMiddleware, controllers.user)
 
 router.get('/test', controllers.test.getTest)
 
+router.post('/addTask', controllers.addTask.addTask)
+
 module.exports = router

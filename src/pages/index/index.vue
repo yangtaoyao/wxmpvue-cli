@@ -1,41 +1,34 @@
 <template>
   <div class="counter-warp">
-    <view class="flex-wrp" style="height: 100%;flex-direction:column;">
-      <view class="flex-item">
-        <map
-          id="map"
-          :longitude="location.longitude"
-          :latitude="location.latitude"
-          scale="14"
-          :markers="markers"
-          bindmarkertap="markertap"
-          :polyline="polyline"
-          bindregionchange="regionchange"
-          show-location
-          style="width: 100%; height: 300px;"
-        ></map>
-      </view>
-      <view class="flex-item">
-      <scroll-view>
-        <i-button @click="test" type="primary">测试按钮</i-button>
-        <i-button type="primary" @click="getLocation">获取定位</i-button>
-        <i-button type="primary" @click="stopLocation">停止定位</i-button>
-        <i-button type="primary" @click="calcDistance(location)">计算距离</i-button>
+    <map
+      id="map"
+      :longitude="location.longitude"
+      :latitude="location.latitude"
+      scale="14"
+      :markers="markers"
+      bindmarkertap="markertap"
+      :polyline="polyline"
+      show-location="true"
+      show-compass="true"
+    ></map>
+    <div>
+      <i-button @click="test" >测试按钮</i-button>
+      <i-button  @click="getLocation">获取定位</i-button>
+      <i-button  @click="stopLocation">停止定位</i-button>
+      <i-button  @click="calcDistance(location)">计算距离</i-button>
 
-        <view class="flex-wrp" style="flex-direction:column;">
-          <view class="flex-item ">
-            <text>latitude:{{location.latitude}}</text>
-          </view>
-          <view class="flex-item ">
-            <text>longitude:{{location.longitude}}</text>
-          </view>
-          <view class="flex-item ">
-            <text>accuracy:{{location.accuracy}}</text>
-          </view>
+      <view class="flex-wrp" style="flex-direction:column;">
+        <view class="flex-item">
+          <text>latitude:{{location.latitude}}</text>
         </view>
-      </scroll-view>
+        <view class="flex-item">
+          <text>longitude:{{location.longitude}}</text>
+        </view>
+        <view class="flex-item">
+          <text>距离:{{distance}}m</text>
+        </view>
       </view>
-    </view>
+    </div>
   </div>
 </template>
 
@@ -53,23 +46,25 @@ export default {
         latitude:'',
         longitude:''
       },
+      distance:0,
       interval:null,
-      
       markers: [{
-        iconPath: '/resources/others.png',
+        iconPath: '/static/icon/location.png',
         id: 0,
-        latitude: 23.099994,
-        longitude: 113.324520,
-        width: 50,
-        height: 50
+        title:"经信教学楼",
+        latitude: 43.825475,
+        longitude: 125.277982,
+        width: 30,
+        height: 30
       }],
+      //路线
       polyline: [{
         points: [{
-          longitude: 113.3245211,
-          latitude: 23.10229
+          longitude: 125.279833,
+          latitude: 43.831767
         }, {
-          longitude: 113.324520,
-          latitude: 23.21229
+          longitude: 125.277946,
+          latitude: 43.825442
         }],
         color: '#FF0000DD',
         width: 2,
@@ -96,15 +91,17 @@ export default {
 
 
     calcDistance(loca){
+      const self=this
       // 调用接口
       util.QQMap.calculateDistance({
           from:loca,
           to:[{
-              latitude: 43.816,
-              longitude: 125.323
+              latitude: 43.831767,
+              longitude: 125.279833
           }],
           success: function(res) {
-              console.log(res.result.elements[0].distance);
+            self.distance=res.result.elements[0].distance
+            console.log(res.result.elements[0].distance);
           },
           fail: function(res) {
               console.log(res);
@@ -113,7 +110,6 @@ export default {
     },
     getLocation(){
       const self=this
-      util.showBusy("获取定位")
       this.interval=setInterval(function(){
         wx.getLocation({
           type: 'wgs84',
@@ -140,18 +136,20 @@ export default {
   },
   mounted(){
     wx.createMapContext("map", this)
-    // this.getInfoList()
+    // this.getLocation()
   }
 }
 </script>
 
-<style>
+<style scoped>
 .counter-warp {
   text-align: center;
   /* margin-top: 100px; */
 }
 #map {
   top: 0;
-  background: #000000;
+  padding:18rpx;
+  width: calc( 100% - 36rpx ); 
+  height: 300px;
 }
 </style>

@@ -5,11 +5,11 @@
     <view class="userinfo">
         <image
             class="userinfo-avatar"
-            :src="logged ? userInfo.avatarUrl : '/static/icon/wode1.png'"
+            :src="logged ? userInfo.avatarUrl : '/static/icon/unlogin.png'"
             background-size="cover"
         ></image>
         <view>
-            <button open-type="getUserInfo" class="userinfo-nickname" v-if="!logged"  @click="bindGetUserInfo">点击测试登录接口</button>
+            <button open-type="getUserInfo" class="userinfo-nickname" v-if="!logged"  @getuserinfo="bindGetUserInfo">点击登录</button>
             <text class="userinfo-nickname" v-else>{{userInfo.nickName}}</text>
         </view>
     </view>
@@ -61,59 +61,84 @@ export default {
   },
   methods: {
     // 用户登录示例
-    bindGetUserInfo() {
+    bindGetUserInfo(data) {
+        //授权信息data
+        console.log("data:")
+        console.log(data)
         if (this.logged) return
-
-        util.showBusy('正在登录')
+        
+        if(!data.mp.detail.rawData)return
 
         qcloud.setLoginUrl(config.loginUrl);
         console.log("config.loginUrl:"+config.loginUrl)
         
         const session = qcloud.Session.get()
+        console.log("session:")
         console.log(session)
 
-        // 首次登录
-        qcloud.login({
-            success: res => {
-                this.userInfo= res
-                this.logged=true
-                util.showSuccess('登录成功')
-            },
-            fail: err => {
-                console.error(err)
-                util.showModel('登录错误', err.message)
-            }
-        })
+        if (session) {
+            // 第二次登录
+            // 或者本地已经有登录态
+            // 可使用本函数更新登录态
+            console.log("第二次登录")
+            qcloud.loginWithCode({
+                success: res => {
+                    this.userInfo= res
+                    wx.setStorageSync('userInfo', res)
+                    this.logged=true
+                    util.showSuccess('登录成功')
+                },
+                fail: err => {
+                    console.error(err)
+                    util.showModel('登录错误', err.errMsg)
+                }
+            })
+        } else {
+            // 首次登录
+            util.showBusy('正在登录')
+            console.log("首次登录")
+            qcloud.login({
+                success: res => {
+                    this.userInfo= res
+                    wx.setStorageSync('userInfo', res)
+                    this.logged=true
+                    util.showSuccess('登录成功')
+                },
+                fail: err => {
+                    console.error(err)
+                    util.showModel('登录错误', err.errMsg)
+                }
+            })
+        }
+        
+    },
 
-        // if (session) {
-        //     // 第二次登录
-        //     // 或者本地已经有登录态
-        //     // 可使用本函数更新登录态
-        //     qcloud.loginWithCode({
-        //         success: res => {
-        //             this.userInfo= res
-        //             logged=true
-        //             util.showSuccess('登录成功')
-        //         },
-        //         fail: err => {
-        //             console.error(err)
-        //             util.showModel('登录错误', err.message)
-        //         }
-        //     })
-        // } else {
-        //     // 首次登录
-        //     qcloud.login({
-        //         success: res => {
-        //             this.userInfo= res
-        //             logged=true
-        //             util.showSuccess('登录成功')
-        //         },
-        //         fail: err => {
-        //             console.error(err)
-        //             util.showModel('登录错误', err.message)
-        //         }
-        //     })
-        // }
+    getUserInfo(){
+        qcloud.setLoginUrl(config.loginUrl);
+        console.log("config.loginUrl:"+config.loginUrl)
+        
+        const session = qcloud.Session.get()
+        console.log("session:")
+        console.log(session)
+
+        if (session) {
+            // 第二次登录
+            // 或者本地已经有登录态
+            // 可使用本函数更新登录态
+            console.log("第二次登录")
+            qcloud.loginWithCode({
+                success: res => {
+                    this.userInfo= res
+                    this.logged=true
+                    wx.setStorageSync('userInfo', res)
+                    util.showSuccess('登录成功')
+                },
+                fail: err => {
+                    console.error(err)
+                    util.showModel('登录错误', err.errMsg)
+                }
+            })
+        }
     },
 
     // 切换是否带有登录态
@@ -277,79 +302,22 @@ export default {
         }
         util.showBusy('信道连接中...')
         this.setData({ tunnelStatus: 'closed' })
-    },
-
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.switchTab({ url:"/pages/index/main" })
-      console.log("bindViewTap")
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
-          })
-        }
-      })
-    },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
     }
   },
 
-  created () {
+  mounted () {
     // 调用应用实例的方法获取全局数据
-    // this.getUserInfo()
-    // console.log("userInfo:")
-    // console.log(this.userInfo)
+    this.getUserInfo()
   }
 }
 </script>
 
 <style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.container{
+    padding:0;
 }
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
-
-/************/
 .userinfo, .uploader, .tunnel {
-    margin-top: 40rpx;
+    margin-top: 8rpx;
     height: 140rpx;
     width: 100%;
     background: #FFF;
@@ -361,17 +329,20 @@ export default {
     align-items: center;
     transition: all 300ms ease;
 }
-
+.userinfo{
+    padding-top: 16rpx;
+    padding-bottom: 16rpx;
+}
 .userinfo-avatar {
-    width: 100rpx;
-    height: 100rpx;
-    margin: 20rpx;
-    border-radius: 50%;
+  width: 120rpx;
+  height: 120rpx;
+  margin: 20rpx;
+  border-radius: 50%;
 }
 
 .userinfo-nickname {
     font-size: 32rpx;
-    color: #007AFF;
+    color: #aaa;
     background-color: white; 
 }
 
@@ -433,40 +404,5 @@ export default {
     position: absolute;
     right: 20rpx;
     top: -2rpx;
-}
-
-.disable {
-    color: #888;
-}
-
-.service {
-    position: fixed;
-    right: 40rpx;
-    bottom: 40rpx;
-    width: 140rpx;
-    height: 140rpx;
-    border-radius: 50%;
-    background: linear-gradient(#007AFF, #0063ce);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .3);
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    transition: all 300ms ease;
-}
-
-.service-button {
-    position: absolute;
-    top: 40rpx;
-}
-
-.service:active {
-    box-shadow: none;
-}
-
-.request-text {
-    padding: 20rpx 0;
-    font-size: 24rpx;
-    line-height: 36rpx;
-    word-break: break-all;
 }
 </style>

@@ -18,6 +18,18 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+// 2018-12-15
+export function formatDate (date) {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+
+  const t1 = [year, month, day].map(formatNumber).join('-')
+
+  return t1
+}
+
+
 // 显示繁忙提示
 var showBusy = text => wx.showToast({
   title: text,
@@ -26,19 +38,20 @@ var showBusy = text => wx.showToast({
 })
 
 // 显示成功提示
-var showSuccess = text => wx.showToast({
+var showSuccess = (text) => wx.showToast({
   title: text,
   icon: 'success'
 })
 
 // 显示失败提示
-var showModel = (title, content) => {
+var showModel = (title, content,callback) => {
   wx.hideToast();
 
   wx.showModal({
       title,
       content: JSON.stringify(content),
-      showCancel: false
+      showCancel: false,
+      success:callback
   })
 }
 

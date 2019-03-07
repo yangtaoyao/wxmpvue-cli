@@ -1,5 +1,10 @@
 <template>
   <div>
+    <navigator
+      url="/pages/addtask/main?title=添加签到"
+      hover-class="navigator-hover"
+      >跳转到新页面</navigator
+    >
     <ul class="container log-list">
       <li v-for="(log, index) in logs" :class="{ red: aa }" :key="index" class="log-item">
         <card :text="(index + 1) + ' . ' + log"></card>
@@ -31,6 +36,11 @@ export default {
 </script>
 
 <style>
+/** 修改默认的navigator点击态 **/
+.navigator-hover {
+  color: blue;
+}
+
 .log-list {
   display: flex;
   flex-direction: column;
